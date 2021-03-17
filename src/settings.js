@@ -1,6 +1,6 @@
 module.exports = {
 
-  title: 'Vue Admin Template',
+  title: 'IHRM 人资中台',
 
   /**
    * @type {boolean} true | false
