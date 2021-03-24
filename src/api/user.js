@@ -7,9 +7,18 @@ export function login(data) {
     data // !要注意：data是请求体参数，params是路径参数
   })
 }
-
-export function getInfo(token) {
-
+// !设置获取用户资料的接口
+export function getUserInfo(token) {
+  return request({
+    url: '/sys/profile',
+    method: 'POST'
+  })
+}
+// !获取用户头像的方法
+export function getUserDetailById(id) {
+  return request({
+    url: `/sys/user/${id}`
+  })
 }
 
 export function logout() {

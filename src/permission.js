@@ -5,14 +5,19 @@ import Nprogress from 'nprogress' // 引入进度条
 import 'nprogress/nprogress.css' // 引入进度条样式
 const whiteList = ['/login', '/404'] // 定义白名单  所有不受权限控制的页面
 // 前置守卫
-router.beforeEach((to, from, next) => {
+router.beforeEach(async(to, from, next) => {
   Nprogress.start() // 开启进度条
   // 首先判断有没有token
   if (store.getters.token) {
+    //! 只有有token的情况下才去获取用户资料
     // 如果有token继续判断是不是去登录页
     if (to.path === '/login') {
       next('/')
     } else {
+      if (!store.getters.userId) {
+        // !这里要强制将异步任务变成同步任务，否则就会出现还有获取完资料就放行的状态
+        await store.dispatch('user/getUserInfo')
+      }
       next()
     }
   } else {

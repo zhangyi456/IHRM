@@ -17,8 +17,8 @@ export function parseTime(time, cFormat) {
   if (typeof time === 'object') {
     date = time
   } else {
-    if ((typeof time === 'string')) {
-      if ((/^[0-9]+$/.test(time))) {
+    if (typeof time === 'string') {
+      if (/^[0-9]+$/.test(time)) {
         // support "1548221490638"
         time = parseInt(time)
       } else {
@@ -28,7 +28,7 @@ export function parseTime(time, cFormat) {
       }
     }
 
-    if ((typeof time === 'number') && (time.toString().length === 10)) {
+    if (typeof time === 'number' && time.toString().length === 10) {
       time = time * 1000
     }
     date = new Date(time)
@@ -45,7 +45,9 @@ export function parseTime(time, cFormat) {
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key]
     // Note: getDay() returns 0 on Sunday
-    if (key === 'a') { return ['日', '一', '二', '三', '四', '五', '六'][value ] }
+    if (key === 'a') {
+      return ['日', '一', '二', '三', '四', '五', '六'][value]
+    }
     return value.toString().padStart(2, '0')
   })
   return time_str
@@ -115,3 +117,20 @@ export function param2Obj(url) {
   })
   return obj
 }
+
+export function tranListToTree(list, rootValue) {
+  const arr = [] // !定义一个空数组
+  list.forEach(item => { // !遍历后端给我们饭回来的数组
+    if (item.pid === rootValue) { // !在数组中去去寻找与根节点的id相同的pid 的那一项
+      // 找到之后 就要去找 item 下面有没有子节点
+      const children = tranListToTree(list, item.id) // !找到以后这里在调用这个方法进行递归遍历，再次寻找，这一项中是否有上一项中有相同的id的pid
+      if (children.length) {
+        // 如果children的长度大于0 说明找到了子节点
+        item.children = children // !这里就是如果我找到了就把这一项加入到我的节点中，没找到就不用加
+      }
+      arr.push(item) // 将内容加入到数组中
+    }
+  })
+  return arr
+}
+
