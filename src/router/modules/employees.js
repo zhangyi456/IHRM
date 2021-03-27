@@ -13,6 +13,14 @@ export default {
         title: '员工管理', // !meta里面的属性的属性可以随便定义的 ，这里为什么要用title呢，主要左侧的导航栏会读取我们meta里面的属性来做为导航菜单的名称
         icon: 'people'
       }
+    },
+    {
+      path: 'detail/:id',
+      component: () => import('@/views/employees/detail'),
+      hidden: true,
+      meta: {
+        title: '员工详情'
+      }
     }
   ]
 }
