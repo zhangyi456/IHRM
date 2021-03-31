@@ -44,7 +44,7 @@ service.interceptors.response.use(
     } else {
       // !业务逻辑错了，才会走这一步
       Message.error(message)
-      return Message.error(new Error(message))
+      return Promise.reject(new Error(message))
     }
   },
   error => {

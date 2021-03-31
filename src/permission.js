@@ -16,9 +16,19 @@ router.beforeEach(async(to, from, next) => {
     } else {
       if (!store.getters.userId) {
         // !这里要强制将异步任务变成同步任务，否则就会出现还有获取完资料就放行的状态
-        await store.dispatch('user/getUserInfo')
+        const { roles } = await store.dispatch('user/getUserInfo')
+        // console.log(roles.menus)
+        const routes = await store.dispatch(
+          'permission/filterRotes',
+          roles.menus
+        )
+        // !这里千万要记住用完router.addRoutes以后一定要用next(to.path)来中断本次路由，非则会掉坑里面
+        // !现在新的版本主要是用的router.addRoute（） 这个方法，可以查文档
+        router.addRoutes([...routes, { path: '*', redirect: '/404', hidden: true }])
+        next(to.path)
+      } else {
+        next()
       }
-      next()
     }
   } else {
     // 如果没有token

@@ -14,6 +14,8 @@ import store from './store'
 import router from './router'
 import * as directives from '@/directives'
 import Component from '@/components'
+import Print from 'vue-print-nb'
+import checkPermission from '@/mixin/cheeckPermission'
 
 import '@/icons' // icon
 import '@/permission' // permission control
@@ -30,12 +32,31 @@ Object.keys(directives).forEach(key => {
   Vue.directive(key, directives[key])
 })
 
+Vue.mixin(checkPermission) // !全局注册混入检查对象
 // set ElementUI lang to EN
 Vue.use(ElementUI, { locale })
 // 如果想要中文版 element-ui，按如下方式声明
 // Vue.use(ElementUI)
 Vue.use(Component) // 注册自己的插件
 Vue.config.productionTip = false
+Vue.use(Print) // 打印组件
+
+// window.getSelection? window.getSelection().removeAllRanges()
+//   : document.selection.empty()
+// !这里是解决使用disabled以后出现的这个可以选中文字的问题，直接获取节点操作ducument
+if (document.all) {
+  document.onselectstart = function() {
+    return false
+  } // for ie
+} else {
+  document.onmousedown = function() {
+    return true
+  }
+  document.onmouseup = function() {
+    return true
+  }
+}
+document.onselectstart = new Function('event.returnValue=false;')
 
 new Vue({
   el: '#app',

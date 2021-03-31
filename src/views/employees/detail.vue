@@ -28,9 +28,23 @@
             </el-form>
           </el-tab-pane>
           <el-tab-pane label="个人详情">
+            <el-row type="flex" justify="end">
+              <el-tooltip content="打印个人基本信息">
+                <router-link :to="`/employees/print/${userId}?type=personal`">
+                  <i class="el-icon-printer" />
+                </router-link>
+              </el-tooltip>
+            </el-row>
             <component :is="componentUser" />
           </el-tab-pane>
           <el-tab-pane label="岗位信息">
+            <el-row type="flex" justify="end">
+              <el-tooltip content="打印岗位信息">
+                <router-link :to="`/employees/print/${userId}?type=job`">
+                  <i class="el-icon-printer" />
+                </router-link>
+              </el-tooltip>
+            </el-row>
             <component :is="componentJob" />
           </el-tab-pane>
         </el-tabs>
@@ -45,7 +59,7 @@ import { saveUserDetailById } from '@/api/employees'
 import userInfo from './components/user-info'
 import JobInfo from './components/job-info'
 export default {
-  name: '',
+  name: 'Asdddd',
   components: {
     userInfo,
     JobInfo
@@ -80,6 +94,7 @@ export default {
   methods: {
     async getUserDetailById() {
       this.userInfo = await getUserDetailById(this.userId)
+      console.log(this.userId)
     },
     // 保存用户基本信息的接口
     saveUser() {

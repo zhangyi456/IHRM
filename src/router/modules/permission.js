@@ -3,7 +3,7 @@ import Layout from '@/layout'
 export default {
   // !每个子模块都是layout下面的二级路由模块，
   path: '/permission',
-  name: 'permission',
+  name: 'permissions',
   component: Layout, // !所以这里的layout是一级路由
   children: [{
     path: '', // !当这里的path什么都不写的时候，默认的就是layout的二级路由
